@@ -1,0 +1,136 @@
+logging:
+  logs:
+    default:
+      level: INFO
+storage:
+  "module": "file_system"
+  "root": "/data"
+apps:
+  tls:
+    certificates:
+      load_files: 
+        - certificate: "/letsencrypt/live/turn-server.local.livekit-mmla.org/fullchain.pem"
+          key: "/letsencrypt/live/turn-server.local.livekit-mmla.org/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+        - certificate: "/letsencrypt/live/livekit.local.livekit-mmla.org/fullchain.pem"
+          key: "/letsencrypt/live/livekit.local.livekit-mmla.org/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+          
+        - certificate: "/letsencrypt/live/dashboard.local.livekit-mmla.org/fullchain.pem"
+          key: "/letsencrypt/live/dashboard.local.livekit-mmla.org/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+        - certificate: "/letsencrypt/live/example-app.local.livekit-mmla.org/fullchain.pem"
+          key: "/letsencrypt/live/example-app.local.livekit-mmla.org/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+        - certificate: "/letsencrypt/live/ecojourneys.local.livekit-mmla.org/fullchain.pem"
+          key: "/letsencrypt/live/ecojourneys.local.livekit-mmla.org/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+        - certificate: "/letsencrypt/live/api.local.livekit-mmla.org/fullchain.pem"
+          key: "/letsencrypt/live/api.local.livekit-mmla.org/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+        - certificate: "/letsencrypt/live/text-egress.local.livekit-mmla.org/fullchain.pem"
+          key: "/letsencrypt/live/text-egress.local.livekit-mmla.org/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+
+      
+  layer4:
+    servers:
+      main:
+        listen: [":443"]
+        routes:
+          - match:
+            - tls:
+                sni:
+                  - "turn-server.local.livekit-mmla.org"
+            handle:
+              - handler: tls
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:5349"]
+          - match:
+              - tls:
+                  sni:
+                    - "livekit.local.livekit-mmla.org"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:7880"]
+          - match:
+              - tls:
+                  sni:
+                    - "dashboard.local.livekit-mmla.org"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:3000"]
+
+          - match:
+              - tls:
+                  sni:
+                    - "example-app.local.livekit-mmla.org"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:3001"]
+
+          - match:
+              - tls:
+                  sni:
+                    - "ecojourneys.local.livekit-mmla.org"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:8000"] 
+
+          - match:
+              - tls:
+                  sni:
+                    - "api.local.livekit-mmla.org"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:8082"] 
+
+          - match:
+              - tls:
+                  sni:
+                    - "text-egress.local.livekit-mmla.org"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:8083"] 
+
+
+
+            
