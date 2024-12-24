@@ -424,22 +424,76 @@ ff00::0 ip6-mcastprefix
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ```
+
+Now, we need to restart the DNSMASQ server:
+
+```bash
+$ sudo systemctl restart dnsmasq
+```
+
+### Setting up the Router Configuration
+Now, we need to configure the router to use the local DNS server. This is done by modifying the DNS settings in the router. The DNS settings should be set to the IP address of the local machine. This will make the router use the local DNS server for resolving the domain names. The router configuration is different for different routers. You can refer to the router manual for configuring the DNS settings.
+
 ## Step 7: Modifying the caddy configuration
-The caddy configuration file is located in this [file](./livekit-local.syncflow.live/caddy.yaml), is modified for the domains that we will be using for the deployment. Before that copy the contents of `letsencrypt` to `/opt/livekit`.
+The caddy configuration file is located in this [file](./livekit-local.syncflow.live/caddy.yaml), is modified for the domains that we will be using for the deployment. Before that copy the contents of `letsencrypt` to `/opt/livekit`. First, we need to modify the livekit configuration file not to use the external_ip. This is because there's a single IP address for the local network. The modified livekit configuration file is [here](./livekit-local.syncflow.live/livekit.yaml). We need to modify the docker-compose file to mount the certificates, as shown [here](./livekit-local.syncflow.live/docker-compose.yaml). Then, we modify the caddy configuration file to use the certificates, as shown [here](./livekit-local.syncflow.live/caddy.yaml). Copy these files to the `/opt/livekit` directory, replacing the existing files and restart the livekit service. Note that `caddy_1.yaml` replaces the `caddy.yaml` file in the livekit directory.
 
+```bash
+$ sudo systemctl restart livekit-docker
+```
 
-
+Now, you should be able to access the livekit server using the domain `https://livekit-local.syncflow.live` and the syncflow dashboard is accessible via `https://local.syncflow.live`.
 
 ## Step 4: Setting up local minio server
 
-## Step 5: Setting up other containers
+Now, we can also use a local minio server for storing the multimedia files. The minio server can be deployed using the following [`docker-compose.minio.yaml`](./livekit-local.syncflow.live/docker-compose.minio.yaml) and further modifying the caddy configuration [file](./livekit-local.syncflow.live/caddy.yaml), done in the previous step:
 
+```bash
+$ docker-compose -p syncflow-minio -f livekit.syncflow.live/docker-compose.minio.yaml up -d
+```
 
+After the minio server is deployed, you can access the minio console using the domain `https://minio-local.syncflow.live`.
+
+The server address is `https://local-minio.syncflow.live:8001`. The access and secret keys can be generated in the console. 
 
 ## Step 8: Creating a Project with Local Resources
+If everything goes to plan and the services are up and running, you can create a project with local resources. Navigate to https://local.syncflow.live, login with your credentials and create a project. You will need to create a bucket in the minio server and generate credentials for the bucket. Additionally, you will need the api key and secret for the livekit server. Once you have the credentials, you can create a project by going to https://local.syncflow.live/dashboard/projects/create and entering the proper URL/credentials for the minio server and the livekit server as shown below:
 
-## Step 8: Deploying the SyncFlow Sharer
+![CreateProject](./images/CreateProject.png)
 
-## Modifying the caddy configuration for the sharer
+## Step 5: Setting up other containers
+Now that you have the SyncFlow platform up and running, you can start deploying the other containers. The following are the steps to deploy the other containers:
+
+1. Generate the API keys and secrets for the SyncFlow project you created.
+
+Use the api keys and secrets generated in the previous step to deploy the other containers that might require SyncFlow integration.
 
 ## Step 9: Testing the deployment in the local network
+Now that we have everything up and running we need a deployment to test that everything works. SyncFlow provides a sharer service that can be used to share the mutlimedia streams from any device's browser to your project. Clone the repsository and follow the instructions to deploy the sharer service. 
+
+```bash
+$ git clone git@github.com:oele-isis-vanderbilt/syncflow-sharer.git
+$ cd syncflow-sharer
+```
+
+Create an `.env` file with the following contents:
+
+```bash
+SYNCFLOW_SERVER_URL="https://api-local.syncflow.live"
+SYNCFLOW_API_KEY="YOUR_API_KEY"
+SYNCFLOW_API_SECRET="YOUR_API_SECRET"
+SYNCFLOW_PROJECT_ID="YOUR_PROJECT_ID"
+ROOT_USER="ROOT_USER_FOR_ADMIN"
+ROOT_PASSWORD="HASHED_PASSWORD_FOR_ADMIN" # Use bcrypt to hash the password you choose by going to https://bcrypt-generator.com/
+PROTOCOL_HEADER="x-forwarded-proto" 
+HOST_HEADER="x-forwarded-host"
+ORIGIN="https://sharer-local.syncflow.live"
+```
+
+Now, you can deploy the sharer service using the following command:
+
+```bash
+$ docker-compose build
+$ docker-compose up -d
+```
+
+Now, you can access the sharer service using the domain `https://sharer-local.syncflow.live`. You can use the sharer service to share the multimedia streams from any device's browser to your project.

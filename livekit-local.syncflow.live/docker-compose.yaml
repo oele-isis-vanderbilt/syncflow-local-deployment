@@ -1,5 +1,3 @@
-# This docker-compose requires host networking, which is only available on Linux
-# This compose will not function correctly on Mac or Windows
 services:
   caddy:
     image: livekit/caddyl4
@@ -7,6 +5,7 @@ services:
     restart: unless-stopped
     network_mode: "host"
     volumes:
+      - ./letsencrypt:/letsencrypt
       - ./caddy.yaml:/etc/caddy.yaml
       - ./caddy_data:/data
   livekit:

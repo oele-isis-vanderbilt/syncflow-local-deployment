@@ -1,7 +1,7 @@
 logging:
   logs:
     default:
-      level: INFO
+      level: DEBUG
 storage:
   "module": "file_system"
   "root": "/data"
@@ -28,8 +28,16 @@ apps:
           key: "/letsencrypt/live/api-local.syncflow.live/privkey.pem"
           format: "pem"
           tags: ["local"]
+
+        - certificate: "/letsencrypt/live/minio-local.syncflow.live/fullchain.pem"
+          key: "/letsencrypt/live/minio-local.syncflow.live/privkey.pem"
+          format: "pem"
+          tags: ["local"]
         
-      
+        - certificate: "/letsencrypt/live/sharer-local.syncflow.live/fullchain.pem"
+          key: "/letsencrypt/live/sharer-local.syncflow.live/privkey.pem"
+          format: "pem"
+          tags: ["local"]
 
   layer4:
     servers:
@@ -67,7 +75,6 @@ apps:
               - handler: proxy
                 upstreams:
                   - dial: ["localhost:3003"]
-
           - match:
               - tls:
                   sni:
@@ -79,3 +86,40 @@ apps:
               - handler: proxy
                 upstreams:
                   - dial: ["localhost:8085"]
+          - match:
+              - tls:
+                  sni:
+                    - "minio-local.syncflow.live"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:9001"]
+          - match:
+              - tls:
+                  sni:
+                    - "sharer-local.syncflow.live"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:3000"]
+      minio:
+        listen: [":8001"]
+        routes:
+          - match:
+            - tls:
+                sni:
+                  - "minio-local.syncflow.live"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:9000"]
+              

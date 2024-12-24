@@ -3,3 +3,4 @@ caddy_data
 .vscode*
 SyncFlow
 .env*
+syncflow-sharer
