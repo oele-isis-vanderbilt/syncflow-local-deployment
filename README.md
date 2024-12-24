@@ -176,6 +176,8 @@ Now that we have the repository. We can start by deploying the SyncFlow platform
 ```bash
 $ cd SyncFlow
 $ touch docker/docker-compose.local.yaml
+
+
 ```
 services:
   postgres-syncflow-local:
@@ -249,6 +251,7 @@ services:
 volumes:
   postgres-data-local:
   rabbitmq-data-local:
+
 ```
 
 Now, based on the compose file configuration, we can start creating the configuration json file, that can be used to deploy syncflow platform. Here's a sample json file you can use, that will work in conjuction with the `docker-compose.local.yaml` above:
