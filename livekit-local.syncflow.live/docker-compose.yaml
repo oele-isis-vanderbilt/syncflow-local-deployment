@@ -9,7 +9,6 @@ services:
     volumes:
       - ./caddy.yaml:/etc/caddy.yaml
       - ./caddy_data:/data
-      - ./letsencrypt:/letsencrypt
   livekit:
     image: livekit/livekit-server:latest
     command: --config /etc/livekit.yaml

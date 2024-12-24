@@ -1,0 +1,52 @@
+{
+    "service": {
+      "app_host": "0.0.0.0",
+      "app_port": 8085,
+      "database_url": "postgres://syncflow-local-admin:syncflow-local-admin-ab6AmlEQ!@postgres-syncflow-local:5432/syncflow",
+      "num_actix_workers": 4,
+      "jwt_secret":"1u7+IGA9qoEKv7T8dzevyh562yDQsQKYfyvueVs5090=",
+      "encryption_key": "3qeMLUsyJr9POejsiS8/lsC+eYCH5RRA+8+hgIJ05rY=",
+      "github_client_id": "Ov23ct15lxXNXf5nYReR", 
+      "github_client_secret": "56ae302bbf08fb1f0f40f31ea8a40cbe727x7072", 
+      "root_user": {
+        "username": "syncflowlocaladmin", 
+        "password": "syncflowlocaladmin-ab6AmlEQ!", 
+        "email": "localadmin@syncflow.live"
+      },
+      "jwt_expiration": 3600000000000000, 
+      "jwt_refresh_expiration": "54000000000000000", 
+      "rabbitmq_config": {
+        "host": "rabbitmq-syncflow-local",
+        "port": 20001,
+        "root_username": "syncflow-local-user",
+        "root_password": "syncflow-local-user-ab6AmlEQ!",
+        "use_ssl": false,
+        "vhost_name": "syncflow",
+        "exchange_name": "syncflow_session_notifier_exchange",
+        "queue_name": "syncflow_session_notifier_queue"
+      },
+      "test_user": "admin",
+      "test_password": "admin"
+    },
+    "dashboard": {
+      "syncflow_api_url": "https://api-local.syncflow.live",
+      "next_public_syncflow_api_url": "https://api-local.syncflow.live",
+      "next_public_livekit_server_url": "wss://livekit-local.syncflow.live",
+      "auth_secret": "1u7+IGA9qoEKv7T8dzevyh562yDQsQKYfyvueVs5090=",
+      "nextauth_url": "https://local.syncflow.live/",
+      "nextauth_internal_url": "http://dashboard-syncflow-local:3000/",
+      "github_client_id": "Ov23ct15lxXNXf5nYR9R", 
+      "github_client_secret": "56ae302bbf08fb1f0f40f31ea8a40cbe727x7072" 
+    },
+    "database_pgadmin": {
+      "postgres_user": "syncflow-local-admin",
+      "postgres_password": "syncflow-local-admin-ab6AmlEQ!",
+      "postgres_db": "syncflow",
+      "pgadmin_default_email": "admin-local@syncflow.live",
+      "pgadmin_default_password": "syncflow-local-admin-ab6AmlEQ!",
+      "pgadmin_listen_port": 81
+    },
+    "migration": {
+      "database_url": "postgres://syncflow-local-admin:syncflow-local-admin-ab6AmlEQ!@postgres-syncflow-local:5432/syncflow"
+    }
+  }

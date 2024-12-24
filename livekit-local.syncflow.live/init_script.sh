@@ -40,12 +40,12 @@ redis:
     max_redirects: null
 turn:
     enabled: true
-    domain: turn-server.deepforge.local
+    domain: turn-local.syncflow.live
     tls_port: 5349
     udp_port: 3478
     external_tls: true
 keys:
-    APIJRzZD22vGfAu: Y9UbHJ0qzyg88LRoEhhR9YJeXmFxXkXlQsAVFhwHWSJ
+    API3poGEeXKKB9G: idtDR8ZLzpTy1jdTEmlJreZBey9NyarJ8xDTOg09038
 
 
 EOF
@@ -63,8 +63,8 @@ apps:
   tls:
     certificates:
       automate:
-        - livekit.deepforge.local
-        - turn-server.deepforge.local
+        - livekit-local.syncflow.live
+        - turn-local.syncflow.live
   layer4:
     servers:
       main:
@@ -73,7 +73,7 @@ apps:
           - match:
             - tls:
                 sni:
-                  - "turn-server.deepforge.local"
+                  - "turn-local.syncflow.live"
             handle:
               - handler: tls
               - handler: proxy
@@ -82,7 +82,7 @@ apps:
           - match:
               - tls:
                   sni:
-                    - "livekit.deepforge.local"
+                    - "livekit-local.syncflow.live"
             handle:
               - handler: tls
                 connection_policies:
@@ -189,9 +189,9 @@ redis:
     sentinel_addresses: []
     cluster_addresses: []
     max_redirects: null
-api_key: APIJRzZD22vGfAu
-api_secret: Y9UbHJ0qzyg88LRoEhhR9YJeXmFxXkXlQsAVFhwHWSJ
-ws_url: wss://livekit.deepforge.local
+api_key: API3poGEeXKKB9G
+api_secret: idtDR8ZLzpTy1jdTEmlJreZBey9NyarJ8xDTOg09038
+ws_url: wss://livekit-local.syncflow.live
 
 
 EOF

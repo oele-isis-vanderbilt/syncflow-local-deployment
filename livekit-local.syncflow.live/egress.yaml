@@ -10,6 +10,6 @@ redis:
     sentinel_addresses: []
     cluster_addresses: []
     max_redirects: null
-api_key: APIJRzZD22vGfAu
-api_secret: Y9UbHJ0qzyg88LRoEhhR9YJeXmFxXkXlQsAVFhwHWSJ
-ws_url: wss://livekit.local.livekit-mmla.org
+api_key: API3poGEeXKKB9G
+api_secret: idtDR8ZLzpTy1jdTEmlJreZBey9NyarJ8xDTOg09038
+ws_url: wss://livekit-local.syncflow.live

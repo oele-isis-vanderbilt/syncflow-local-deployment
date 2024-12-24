@@ -1,0 +1,81 @@
+logging:
+  logs:
+    default:
+      level: INFO
+storage:
+  "module": "file_system"
+  "root": "/data"
+apps:
+  tls:
+    certificates:
+      load_files: 
+        - certificate: "/letsencrypt/live/turn-local.syncflow.live/fullchain.pem"
+          key: "/letsencrypt/live/turn-local.syncflow.live/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+        - certificate: "/letsencrypt/live/livekit-local.syncflow.live/fullchain.pem"
+          key: "/letsencrypt/live/livekit-local.syncflow.live/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+        - certificate: "/letsencrypt/live/local.syncflow.live/fullchain.pem"
+          key: "/letsencrypt/live/local.syncflow.live/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+
+        - certificate: "/letsencrypt/live/api-local.syncflow.live/fullchain.pem"
+          key: "/letsencrypt/live/api-local.syncflow.live/privkey.pem"
+          format: "pem"
+          tags: ["local"]
+        
+      
+
+  layer4:
+    servers:
+      main:
+        listen: [":443"]
+        routes:
+          - match:
+            - tls:
+                sni:
+                  - "turn-local.syncflow.live"
+            handle:
+              - handler: tls
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:5349"]
+          - match:
+              - tls:
+                  sni:
+                    - "livekit-local.syncflow.live"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:7880"]
+          - match:
+              - tls:
+                  sni:
+                    - "local.syncflow.live"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:3003"]
+
+          - match:
+              - tls:
+                  sni:
+                    - "api-local.syncflow.live"
+            handle:
+              - handler: tls
+                connection_policies:
+                  - alpn: ["http/1.1"]
+              - handler: proxy
+                upstreams:
+                  - dial: ["localhost:8085"]

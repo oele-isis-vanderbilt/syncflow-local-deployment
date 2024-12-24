@@ -1,3 +1,5 @@
 letsencrypt
 caddy_data
 .vscode*
+SyncFlow
+.env*

@@ -1,0 +1,53 @@
+{
+    "service": {
+      "app_host": "Specify the IP address or hostname where your application will be hosted. Use '0.0.0.0' to allow access from all network interfaces.",
+      "app_port": "The port on which your application will listen for incoming requests (e.g., 8080).",
+      "database_url": "The connection string for the PostgreSQL database in the format: 'postgres://<username>:<password>@<host>:<port>/<database_name>'. Replace placeholders accordingly.",
+      "num_actix_workers": "The number of Actix Web workers to handle requests. Adjust based on available CPU cores and application load.",
+      "jwt_secret": "The secret key used to sign JSON Web Tokens (JWT) for authentication.",
+      "encryption_key": "A deployment-wide key used for encrypting sensitive data.",
+      "github_client_id": "The Client ID for GitHub OAuth integration. Obtain this from your GitHub OAuth App settings.",
+      "github_client_secret": "The Client Secret for GitHub OAuth integration. Keep this secure.",
+      "root_user": {
+        "username": "The username for the application's root/admin user.",
+        "password": "A secure password for the root/admin user.",
+        "email": "The email address associated with the root/admin user."
+      },
+      "jwt_expiration": "The expiration time for access JWTs in seconds.",
+      "jwt_refresh_expiration": "The expiration time for refresh JWTs in seconds, used to renew access tokens.",
+      "rabbitmq_config": {
+        "host": "The hostname or IP address of the RabbitMQ server.",
+        "port": "The port RabbitMQ is listening on (default: 5672).",
+        "root_username": "The root/administrative username for RabbitMQ.",
+        "root_password": "The password for the root RabbitMQ user.",
+        "use_ssl": "Boolean value (true/false) indicating if RabbitMQ connections should use SSL.",
+        "vhost_name": "The RabbitMQ virtual host name used by this application (e.g., 'syncflow').",
+        "exchange_name": "The name of the RabbitMQ exchange used for message routing.",
+        "queue_name": "The name of the RabbitMQ queue for handling session notifications."
+      },
+      "test_user": "The username for testing or debugging purposes.",
+      "test_password": "The password for the test user account."
+    },
+    "dashboard": {
+      "syncflow_api_url": "The public API URL for the SyncFlow backend service.",
+      "next_public_syncflow_api_url": "The frontend-facing API URL for SyncFlow.",
+      "next_public_livekit_server_url": "The WebSocket URL for the LiveKit server used for real-time communication.",
+      "auth_secret": "A secret key for managing JWT-based authentication in the dashboard.",
+      "nextauth_url": "The external URL for NextAuth authentication setup.",
+      "nextauth_internal_url": "The internal service URL for NextAuth (used by other containers, e.g., http://dashboard-container-name:3000/).",
+      "github_client_id": "The Client ID for GitHub OAuth integration for the dashboard.",
+      "github_client_secret": "The Client Secret for GitHub OAuth integration for the dashboard."
+    },
+    "database_pgadmin": {
+      "postgres_user": "The username for connecting to the PostgreSQL database.",
+      "postgres_password": "The password for the PostgreSQL user.",
+      "postgres_db": "The name of the PostgreSQL database (e.g., 'syncflow').",
+      "pgadmin_default_email": "The default email address for logging into PgAdmin.",
+      "pgadmin_default_password": "A secure password for the PgAdmin user.",
+      "pgadmin_listen_port": "The port on which PgAdmin will be accessible (default: 81)."
+    },
+    "migration": {
+      "database_url": "The PostgreSQL connection string for database migrations. Format is the same as 'database_url' above."
+    }
+  }
+  
