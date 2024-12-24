@@ -176,9 +176,9 @@ Now that we have the repository. We can start by deploying the SyncFlow platform
 ```bash
 $ cd SyncFlow
 $ touch docker/docker-compose.local.yaml
-
-
 ```
+
+```{yaml}
 services:
   postgres-syncflow-local:
     image: postgres:14-alpine
